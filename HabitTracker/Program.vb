@@ -11,6 +11,17 @@ Module Program
     Private Sub MainMenu()
         ShowMainMenu()
         Select Case Console.ReadLine()
+            Case "Exit"
+                Exit Sub
+            Case "View"
+                ShowAllRecords()
+            Case "Insert"
+                InsertRecord()
+            Case "Delete"
+                DeleteRecord()
+            Case "Update"
+                UpdateRecord()
+
             Case 0
                 Exit Sub
             Case 1
@@ -40,12 +51,22 @@ Module Program
 
     Private Sub ShowMainMenu()
         Console.ForegroundColor = ConsoleColor.DarkGreen
-        ShowTitle("Main Menu")
-        Console.WriteLine("Type 0 to Close Application")
-        Console.WriteLine("Type 1 to View All Records")
-        Console.WriteLine("Type 2 to Insert Record")
-        Console.WriteLine("Type 3 to Delete Record")
-        Console.WriteLine("Type 4 to Update Record")
+        ShowTitle("Main Menu Options:")
+
+
+
+        Console.WriteLine("View")
+        Console.WriteLine("Insert")
+        Console.WriteLine("Delete")
+        Console.WriteLine("Update")
+        Console.WriteLine("Exit")
+
+
+        'Console.WriteLine("Type 0 to Close Application")
+        'Console.WriteLine("Type 1 to View All Records")
+        'Console.WriteLine("Type 2 to Insert Record")
+        'Console.WriteLine("Type 3 to Delete Record")
+        'Console.WriteLine("Type 4 to Update Record")
         Console.ResetColor()
     End Sub
 
