@@ -31,10 +31,9 @@ Public Class Database
         Using connection As New SqliteConnection(connectionString)
             Using tableCmd = connection.CreateCommand()
                 connection.Open()
-                tableCmd.CommandText =
-                    "SELECT * FROM yourHabit"
-                Dim reader As SqliteDataReader = tableCmd.ExecuteReader()
+                tableCmd.CommandText = "SELECT * FROM yourHabit"
 
+                Dim reader As SqliteDataReader = tableCmd.ExecuteReader()
                 While (reader.Read())
                     Dim idReader As Integer = reader.GetInt32(0)
                     Dim dateReader As String = reader.GetString(1)
@@ -42,35 +41,36 @@ Public Class Database
                     Dim habit As Habit = New Habit(idReader, dateReader, quantityReader)
                     records.Add(habit)
                 End While
-
             End Using
         End Using
         Return records
     End Function
 
-    Public Sub Read()
+    Public Function Read(id As Integer) As Habit
+        Dim result As Habit
         Using connection As New SqliteConnection(connectionString)
             Using tableCmd = connection.CreateCommand()
                 connection.Open()
-                tableCmd.CommandText =
-                    "SELECT * FROM yourHabit"
-                Dim reader As SqliteDataReader = tableCmd.ExecuteReader()
+                tableCmd.CommandText = "SELECT * FROM yourHabit WHERE Id = $id"
+                tableCmd.Parameters.AddWithValue("$id", id)
 
+                Dim reader As SqliteDataReader = tableCmd.ExecuteReader()
+                'Dim idReader As Integer = reader.GetInt32(0)
                 While (reader.Read())
                     Dim dateReader As String = reader.GetString(1)
                     Dim quantityReader As Integer = reader.GetInt32(2)
-                    Console.WriteLine(dateReader & " " & quantityReader)
+
+                    result = New Habit(id, dateReader, quantityReader)
                 End While
             End Using
         End Using
-    End Sub
+        Return result
+    End Function
 
     Public Sub Update(id As Integer, recordDate As String, quantity As Integer)
         Using connection As New SqliteConnection(connectionString)
-            'Creating the command that wwill be sent to the database
             Using tableCmd = connection.CreateCommand()
                 connection.Open()
-                'Declaring the command (in SQL syntax)
                 tableCmd.CommandText =
                         "UPDATE yourHabit
                         SET Date = $date,
@@ -96,6 +96,23 @@ Public Class Database
             End Using
         End Using
     End Sub
+
+    Public Function RecordExists(id As Integer) As Boolean
+        Dim result As Integer
+        Using connection As New SqliteConnection(connectionString)
+            Using tableCmd = connection.CreateCommand()
+                connection.Open()
+                tableCmd.CommandText = "SELECT EXISTS(SELECT 1 FROM yourHabit WHERE Id = $id)"
+                tableCmd.Parameters.AddWithValue("$id", id)
+                result = tableCmd.ExecuteScalar()
+            End Using
+        End Using
+        If result = 0 Then
+            Return False
+        Else
+            Return True
+        End If
+    End Function
 
     ''' <summary>
     ''' Creates a database if none exists. Also creates as table called yourHabit if none exists
