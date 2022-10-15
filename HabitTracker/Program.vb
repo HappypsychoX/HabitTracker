@@ -28,39 +28,6 @@ Module Program
         End Select
     End Sub
 
-#Region "Console Messages"
-    ''' <summary>
-    ''' Creates a title section to display the item from the main menu.
-    ''' </summary>
-    ''' <param name="title">The title to be displayed</param>
-    Private Sub ShowTitle(title As String)
-        Console.WriteLine()
-        Console.WriteLine("////////////////////////////")
-        Console.WriteLine("/                          /")
-        Console.WriteLine("/ " & title & "/")
-        Console.WriteLine("/                          /")
-        Console.WriteLine("////////////////////////////")
-        Console.WriteLine()
-    End Sub
-
-    Private Sub ShowMainMenu()
-        ShowTitle("Main Menu")
-        Console.WriteLine("Type 0 to Close Application")
-        Console.WriteLine("Type 1 to View All Records")
-        Console.WriteLine("Type 2 to Insert Record")
-        Console.WriteLine("Type 3 to Delete Record")
-        Console.WriteLine("Type 4 to Update Record")
-    End Sub
-
-    Private Sub StartupMessage()
-        Console.WriteLine("////////////////////////////")
-        Console.WriteLine("/ Habit Tracker            /")
-        Console.WriteLine("/ By HappypsychoX          /")
-        Console.WriteLine("/ October 2022             /")
-        Console.WriteLine("////////////////////////////")
-    End Sub
-#End Region
-
     Private Sub ShowAllRecords()
         Dim records As List(Of Habit) = db.ReadAll
 

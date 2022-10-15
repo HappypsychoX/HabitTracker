@@ -2,7 +2,7 @@ Imports Microsoft.Data.Sqlite
 
 Public Class Database
 
-    Private connectionString As String = "Data Source=habit-Tracker.db"
+    Private ReadOnly connectionString As String = "Data Source=habit-Tracker.db"
 
     Public Sub New()
         InitializeDatabase()
@@ -27,7 +27,7 @@ Public Class Database
     ''' </summary>
     ''' <returns>List of type Habit</returns>
     Public Function ReadAll() As List(Of Habit)
-        Dim records As List(Of Habit) = New List(Of Habit)
+        Dim records As New List(Of Habit)
         Using connection As New SqliteConnection(connectionString)
             Using tableCmd = connection.CreateCommand()
                 connection.Open()
@@ -38,8 +38,7 @@ Public Class Database
                     Dim idReader As Integer = reader.GetInt32(0)
                     Dim dateReader As String = reader.GetString(1)
                     Dim quantityReader As Integer = reader.GetInt32(2)
-                    Dim habit As Habit = New Habit(idReader, dateReader, quantityReader)
-                    records.Add(habit)
+                    records.Add(New Habit(idReader, dateReader, quantityReader))
                 End While
             End Using
         End Using
