@@ -2,15 +2,17 @@ Imports System
 
 Module Program
     Private db As Database
+    Private myConsole As MyConsole
 
     Sub Main(args As String())
         db = New Database
+        myConsole = New MyConsole
+
         MainMenu()
     End Sub
 
     Private Sub MainMenu()
-        ShowMainMenu()
-        Select Case Console.ReadLine()
+        Select Case myConsole.MainMenuUserInput()
             Case 0
                 Exit Sub
             Case 1
@@ -21,83 +23,49 @@ Module Program
                 DeleteRecord()
             Case 4
                 UpdateRecord()
+            Case Else
+                myConsole.InvalidInputMessage()
         End Select
     End Sub
 
-    ''' <summary>
-    ''' Creates a title section to display the item from the main menu.
-    ''' </summary>
-    ''' <param name="title">The title to be displayed</param>
-    Private Sub ShowTitle(title As String)
-        Console.WriteLine()
-        Console.WriteLine("////////////////////////////")
-        Console.WriteLine("/")
-        Console.WriteLine("/ " & title)
-        Console.WriteLine("/")
-        Console.WriteLine("////////////////////////////")
-        Console.WriteLine()
-    End Sub
-
-    Private Sub ShowMainMenu()
-        Console.ForegroundColor = ConsoleColor.DarkGreen
-        ShowTitle("Main Menu")
-        Console.WriteLine("Type 0 to Close Application")
-        Console.WriteLine("Type 1 to View All Records")
-        Console.WriteLine("Type 2 to Insert Record")
-        Console.WriteLine("Type 3 to Delete Record")
-        Console.WriteLine("Type 4 to Update Record")
-        Console.ResetColor()
-    End Sub
-
     Private Sub ShowAllRecords()
-        Console.ForegroundColor = ConsoleColor.DarkGreen
-        ShowTitle("Show All Records")
         Dim records As List(Of Habit) = db.ReadAll
-        For Each element As Habit In records
-            Console.WriteLine(element.Id & " " & element.RecordDate & " " & element.Quantity)
-        Next
 
-        Console.WriteLine("There are " & records.Count & " records in the database.")
-        Console.WriteLine("Press any key to continue.")
-        Console.ReadKey()
+        myConsole.ShowRecords(records)
         MainMenu()
     End Sub
 
     Private Sub InsertRecord()
-        Console.ForegroundColor = ConsoleColor.DarkGreen
-        ShowTitle("Insert New Record")
+        Dim input As String() = myConsole.InsertRecordInput()
+        db.Create(input(0), input(1))
 
-        Console.WriteLine("Please enter quantity")
-        Dim qty As Integer = Console.ReadLine
-        Dim record As Habit = New Habit(0, Today.ToString("d"), qty)
-        db.Create(record.RecordDate, record.Quantity)
-        Console.WriteLine("Record Added")
-
+        myConsole.RecordAddedMessage()
         MainMenu()
     End Sub
 
     Private Sub DeleteRecord()
-        Console.ForegroundColor = ConsoleColor.DarkGreen
-        ShowTitle("Delete Record")
-
-        Console.WriteLine("Please enter the ID to delete")
-        Dim id As Integer = Console.ReadLine
-        db.Delete(id)
-        Console.ResetColor()
-        MainMenu()
+        Dim id As Integer = myConsole.DeleteRecordInput
+        If id = 0 Then
+            MainMenu()
+        Else
+            db.Delete(id)
+            myConsole.RecordDeletedMessage()
+            MainMenu()
+        End If
     End Sub
 
     Private Sub UpdateRecord()
-        Console.Clear()
-        Console.WriteLine("Update Record")
-        Console.WriteLine("Please type the Id to update")
-        Dim id As Integer = Console.ReadLine
-        Console.WriteLine("Please type the new date")
-        Dim recordDate As String = Console.ReadLine
-        Console.WriteLine("Please type the quantity")
-        Dim quantity As Integer = Console.ReadLine
-
-        db.Update(id, recordDate, quantity)
+        Dim id As Integer = myConsole.UpdateRecordIdInput
+        Dim record As Habit
+        If db.RecordExists(id) Then
+            record = db.Read(id)
+            Dim input As String() = myConsole.UpdateRecordDataInput(record)
+            record.RecordDate = input(0)
+            record.Quantity = input(1)
+            db.Update(id, record.RecordDate, record.Quantity)
+        Else
+            myConsole.NoRecordMessage()
+        End If
 
         MainMenu()
     End Sub
