@@ -13,7 +13,7 @@ Module Program
 
     Private Sub MainMenu()
         Select Case myConsole.MainMenuUserInput()
-            Case 0
+            Case "Close"
                 Exit Sub
             Case 1
                 ShowAllRecords()

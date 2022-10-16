@@ -109,7 +109,7 @@ Start:
     Private Sub ShowMainMenu()
         ShowTitle("Main Menu")
 
-        Console.WriteLine("Type 0 to Close Application")
+        Console.WriteLine("Type Close to Close Application")
         Console.WriteLine("Type 1 to View All Records")
         Console.WriteLine("Type 2 to Insert Record")
         Console.WriteLine("Type 3 to Delete Record")
