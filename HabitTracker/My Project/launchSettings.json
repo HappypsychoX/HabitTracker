@@ -2,7 +2,7 @@
   "profiles": {
     "HabitTracker": {
       "commandName": "Project",
-      "workingDirectory": "C:\\Users\\jeram\\source\\repos\\HabitTracker\\HabitTracker"
+      "workingDirectory": "D:\\Projects\\HabitTracker\\HabitTracker"
     }
   }
 }

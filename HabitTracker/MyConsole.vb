@@ -104,6 +104,11 @@ Start:
         Console.WriteLine("/ By HappypsychoX          /")
         Console.WriteLine("/ October 2022             /")
         Console.WriteLine("////////////////////////////")
+
+        Console.WriteLine(" _  _        _     _  _          _____                 _  ")
+        Console.WriteLine("| || | __ _ | |__ (_)| |_       |_   _| _ _  __ _  __ | |__ ___  _ _ ")
+        Console.WriteLine("| __ |/ _` ||  _ \| ||  _|        | |  | '_|/ _` |/ _|| / // -_)| '_|")
+        Console.WriteLine("|_||_|\__/_||____/|_| \__|        |_|  |_|  \__/_|\__||_\_\\___||_|  ")
     End Sub
 
     Private Sub ShowMainMenu()
